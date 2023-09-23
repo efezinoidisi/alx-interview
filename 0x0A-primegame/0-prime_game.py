@@ -15,15 +15,17 @@ def isWinner(x, nums):
     return:
       name of player that won the most rounds
     """
+    if x < 1 or not nums:
+        return None
     maria_wins = 0
     ben_wins = 0
 
     for n in nums:
-        winner = play_round(n)
-        if winner == "Maria":
-            maria_wins += 1
-        elif winner == "Ben":
+        prime_count = sum(1 for i in range(2, n + 1) if is_prime(i))
+        if prime_count % 2 == 0:
             ben_wins += 1
+        else:
+            maria_wins += 1
 
     if maria_wins > ben_wins:
         return "Maria"
@@ -41,19 +43,3 @@ def is_prime(num):
         if num % i == 0:
             return False
     return True
-
-
-def play_round(n):
-    """single game round"""
-    maria_turn = True
-    while n > 0:
-        prime_found = False
-        for i in range(2, n + 1):
-            if is_prime(i) and n % i == 0:
-                prime_found = True
-                n -= i
-                break
-        if not prime_found:
-            break
-        maria_turn = not maria_turn
-    return "Maria" if maria_turn else "Ben"
